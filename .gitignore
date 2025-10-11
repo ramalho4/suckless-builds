@@ -1,0 +1,8 @@
+# Ignore binaries and build artifacts
+**/*.o
+**/*.rej
+**/*.orig
+**/dwm
+**/st
+**/dmenu
+**/slstatus
