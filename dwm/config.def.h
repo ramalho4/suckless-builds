@@ -21,19 +21,36 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+
 static const char col_black[] 		="#000000";
 static const char col_white[]		="#ffffff";
 static const char col_weird_green[] 	="#90c59c";
 static const char col_my_gray[]		="#14161b";
-static const char col_my_white[] 	="#bfc1c9"; 
+static const char col_my_white[] 	="#bfc1c9";
+
+//Colors for dracula theme
+static const char col_bg[]          = "#282a36"; // Background
+static const char col_fg[]          = "#f8f8f2"; // Foregro
+static const char col_gray[]        = "#44475a"; // Current line / darker gray
+static const char col_cyan[]        = "#8be9fd"; // Cyan / Accent
+static const char col_purple[]      = "#bd93f9";
+
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
+	[SchemeNorm] = { col_fg,     col_bg,    col_gray   },  // unfocused window
+	[SchemeSel]  = { col_bg,     col_purple, col_purple }   // focused window
+};
+
+/*
+static const char *colors[][3]      = {
+	//            fg         bg         border   
 	[SchemeNorm] = { col_my_white, col_my_gray, col_my_gray },
 	[SchemeSel]  = { col_my_gray, col_weird_green,  col_weird_green  }
 
 	
 };
+*/
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -86,6 +103,20 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = {
 	"dmenu_run",
 	"-l", "10",
+	"-fn", dmenufont,          // same font as your bar
+	"-nb", "#282a36",          // normal background (Dracula background)
+	"-nf", "#f8f8f2",          // normal foreground (Dracula foreground)
+	"-sb", "#bd93f9",          // selected background (Dracula purple)
+	"-sf", "#282a36",          // selected foreground (dark text on highlight)
+	NULL
+};
+
+
+
+/*
+static const char *dmenucmd[] = {
+	"dmenu_run",
+	"-l", "10",
 	"-fn", dmenufont,          // use the same font as your bar
 	"-nb", col_my_gray,        // normal background
 	"-nf", col_my_white,    // normal foreground
@@ -93,6 +124,7 @@ static const char *dmenucmd[] = {
 	"-sf", col_my_gray,        // selected foreground
 	NULL
 };
+*/
 
 static const char *termcmd[]  = { "st", NULL };
 

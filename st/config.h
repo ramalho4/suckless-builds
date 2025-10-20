@@ -99,40 +99,38 @@ float alpha = 0.8;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
     /* 8 normal colors */
-       "#14161b", // black -> col_my_gray
-    "#38b48b", // red -> vivid greenish accent
-    "#2aa198", // green -> teal
-    "#90c59c", // yellow -> original weird green
-    "#268bd2", // blue -> bright blue
-    "#d33682", // magenta -> vivid pink/purple
-    "#00bcd4", // cyan -> bright cyan
-    "#bfc1c9", // white -> col_my_white
+    "#21222c", // black   -> Dracula background
+    "#ff5555", // red     -> Dracula red
+    "#50fa7b", // green   -> Dracula green
+    "#f1fa8c", // yellow  -> Dracula yellow
+    "#bd93f9", // blue    -> Dracula purple/blue
+    "#ff79c6", // magenta -> Dracula pink
+    "#8be9fd", // cyan    -> Dracula cyan
+    "#f8f8f2", // white   -> Dracula foreground
+
     /* 8 bright colors */
-    "#14161b", // black -> col_my_gray
-    "#90c59c", // red -> col_weird_green (accent)
-    "#5c9e91", // green -> complementary soft teal
-    "#90c59c", // yellow -> same as weird green for harmony
-    "#4477aa", // blue -> calm medium blue
-    "#b58ebf", // magenta -> soft purple
-    "#70b8c4", // cyan -> soft cyan
-    "#bfc1c9", // white -> col_my_white
+    "#6272a4", // bright black (Dracula comment gray)
+    "#ff6e6e", // bright red
+    "#69ff94", // bright green
+    "#ffffa5", // bright yellow
+    "#d6acff", // bright blue/purple
+    "#ff92df", // bright magenta
+    "#a4ffff", // bright cyan
+    "#ffffff", // bright white
 
-
-	
     [255] = 0,
 
-    /* extra colors for defaults */
-    "#90c59c", // 256 cursor color (col_weird_green)
-    "#eeeeee", // 257 reverse cursor
-    "#bfc1c9", // 258 foreground (col_my_white)
-    "#14161b", // 259 background (col_my_gray)
+    /* Extra colors for defaults */
+    "#bd93f9", // 256 cursor color (Dracula purple)
+    "#f8f8f2", // 257 reverse cursor
+    "#f8f8f2", // 258 foreground (Dracula fg)
+    "#282a36", // 259 background (Dracula bg)
 };
 
 unsigned int defaultfg = 258;
 unsigned int defaultbg = 259;
 unsigned int defaultcs = 256;
 static unsigned int defaultrcs = 257;
-
 
 //&&&&&&&&&&DEFAULT&&&&&&&&&&&&
 /*static const char *colorname[] = {
