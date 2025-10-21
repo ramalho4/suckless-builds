@@ -319,18 +319,12 @@ int main(void)
         vol = volume_status();
         bright = brightness_status(); 
 
-        // Update battery every 300 loops (~30s)
-        if (counter % 300 == 0) {
-            free(bat);
+        
             bat = getbattery("/sys/class/power_supply/BAT0");
 	    bat_int = atoi(bat);
-        }
-
-        // Update Wi-Fi every 300 loops (~30s)
-        if (counter % 5 == 0) {
-            free(wifi);
+            
             wifi = wifi_status();
-        }
+        
 
         // Construct and set status bar
         status = smprintf(" [[%s] [bat:%s] [vol:%s] [lcd:%s] [%s]", wifi, bat, vol, bright, tmar);
@@ -339,13 +333,15 @@ int main(void)
 
 
         // Free temporary strings
+	free(bat);
+	free(wifi);
         free(vol);
-        //free(bright); // uncomment if you add brightness
+        free(bright); // uncomment if you add brightness
         free(tmar);
         free(status);
 
         counter++;
-        usleep(100000); // 0.1s delay → near-instant updates
+        usleep(10000); // 0.1s delay → near-instant updates
     }
 
     // Free remaining memory
