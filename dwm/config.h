@@ -17,29 +17,31 @@ static const int sidepad = 10;
 
 static const char *fonts[]          = { "Inconsolata:style=SemiBold:size=16" };
 static const char dmenufont[]       = "Inconsolata:style=SemiBold:size=18";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-
-static const char col_black[] 		="#000000";
-static const char col_white[]		="#ffffff";
-static const char col_weird_green[] 	="#90c59c";
-static const char col_my_gray[]		="#14161b";
-static const char col_my_white[] 	="#bfc1c9";
-
-//Colors for dracula theme
-static const char col_bg[]          = "#282a36"; // Background
-static const char col_fg[]          = "#f8f8f2"; // Foregro
-static const char col_gray[]        = "#44475a"; // Current line / darker gray
-static const char col_cyan[]        = "#8be9fd"; // Cyan / Accent
-static const char col_purple[]      = "#bd93f9";
 
 
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_fg,     col_bg,    col_gray   },  // unfocused window
-	[SchemeSel]  = { col_bg,     col_purple, col_purple }   // focused window
+
+static const char col_black[]       = "#282828"; // background dark
+//static const char col_dark_gray[]   = "#3c3836"; // normal gray/dark
+static const char col_light_gray[]  = "#bdae93"; // normal text gray
+static const char col_white[]       = "#ebdbb2"; // bright text / foreground
+static const char col_red[]         = "#cc241d";
+static const char col_green[]       = "#98971a";
+static const char col_yellow[]      = "#d79921"; 
+static const char col_blue[]        = "#458588";
+static const char col_magenta[]     = "#b16286";
+static const char col_cyan[]        = "#689d6a";
+
+static const char col_bg[]      = "#282828"; // background
+static const char col_fg[]      = "#ebdbb2"; // foreground
+static const char col_accent[]  = "#d79921"; // mellow selected highlight
+
+static const char col_dark_gray[] = "#3c3836"; // window border normal
+
+
+static const char *colors[][3] = {
+    /*               fg         bg         border   */
+    [SchemeNorm] = { col_fg, col_bg, col_dark_gray },
+    [SchemeSel]  = { col_bg, col_accent, col_accent }
 };
 
 /*
@@ -101,16 +103,15 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 
 static const char *dmenucmd[] = {
-	"dmenu_run",
-	"-l", "10",
-	"-fn", dmenufont,          // same font as your bar
-	"-nb", "#282a36",          // normal background (Dracula background)
-	"-nf", "#f8f8f2",          // normal foreground (Dracula foreground)
-	"-sb", "#bd93f9",          // selected background (Dracula purple)
-	"-sf", "#282a36",          // selected foreground (dark text on highlight)
-	NULL
+    "dmenu_run",
+    "-l", "10",
+    "-fn", dmenufont,
+    "-nb", col_bg,       // normal background
+    "-nf", col_fg,       // normal foreground
+    "-sb", col_accent,   // selected background (mellow)
+    "-sf", col_bg,       // selected foreground
+    NULL
 };
-
 
 
 /*

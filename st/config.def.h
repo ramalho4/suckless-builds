@@ -97,34 +97,35 @@ unsigned int tabspaces = 8;
 float alpha = 0.8;
 
 /* Terminal colors (16 first used in escape sequence) */
+/* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
     /* 8 normal colors */
-    "#21222c", // black   -> Dracula background
-    "#ff5555", // red     -> Dracula red
-    "#50fa7b", // green   -> Dracula green
-    "#f1fa8c", // yellow  -> Dracula yellow
-    "#bd93f9", // blue    -> Dracula purple/blue
-    "#ff79c6", // magenta -> Dracula pink
-    "#8be9fd", // cyan    -> Dracula cyan
-    "#f8f8f2", // white   -> Dracula foreground
+    "#282828", // black
+    "#cc241d", // red
+    "#98971a", // green
+    "#d79921", // yellow
+    "#458588", // blue
+    "#b16286", // magenta
+    "#689d6a", // cyan
+    "#a89984", // white
 
     /* 8 bright colors */
-    "#6272a4", // bright black (Dracula comment gray)
-    "#ff6e6e", // bright red
-    "#69ff94", // bright green
-    "#ffffa5", // bright yellow
-    "#d6acff", // bright blue/purple
-    "#ff92df", // bright magenta
-    "#a4ffff", // bright cyan
-    "#ffffff", // bright white
+    "#928374", // bright black (gray)
+    "#fb4934", // bright red
+    "#b8bb26", // bright green
+    "#fabd2f", // bright yellow
+    "#83a598", // bright blue
+    "#d3869b", // bright magenta
+    "#8ec07c", // bright cyan
+    "#ebdbb2", // bright white
 
     [255] = 0,
 
-    /* Extra colors for defaults */
-    "#bd93f9", // 256 cursor color (Dracula purple)
-    "#f8f8f2", // 257 reverse cursor
-    "#f8f8f2", // 258 foreground (Dracula fg)
-    "#282a36", // 259 background (Dracula bg)
+    /* extra colors for defaults */
+    "#fabd2f", // 256 cursor color (yellow accent)
+    "#eeeeee", // 257 reverse cursor
+    "#ebdbb2", // 258 foreground
+    "#282828", // 259 background
 };
 
 unsigned int defaultfg = 258;
