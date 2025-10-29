@@ -99,34 +99,34 @@ float alpha = 0.8;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
     /* 8 normal colors */
-       "#14161b", // black -> col_my_gray
-    "#38b48b", // red -> vivid greenish accent
-    "#2aa198", // green -> teal
-    "#90c59c", // yellow -> original weird green
-    "#268bd2", // blue -> bright blue
-    "#d33682", // magenta -> vivid pink/purple
-    "#00bcd4", // cyan -> bright cyan
-    "#bfc1c9", // white -> col_my_white
+    "#282828", // black
+    "#cc241d", // red
+    "#98971a", // green
+    "#d79921", // yellow
+    "#458588", // blue
+    "#b16286", // magenta
+    "#689d6a", // cyan
+    "#a89984", // white
+
     /* 8 bright colors */
-    "#14161b", // black -> col_my_gray
-    "#90c59c", // red -> col_weird_green (accent)
-    "#5c9e91", // green -> complementary soft teal
-    "#90c59c", // yellow -> same as weird green for harmony
-    "#4477aa", // blue -> calm medium blue
-    "#b58ebf", // magenta -> soft purple
-    "#70b8c4", // cyan -> soft cyan
-    "#bfc1c9", // white -> col_my_white
+    "#928374", // bright black (gray)
+    "#fb4934", // bright red
+    "#b8bb26", // bright green
+    "#fabd2f", // bright yellow
+    "#83a598", // bright blue
+    "#d3869b", // bright magenta
+    "#8ec07c", // bright cyan
+    "#ebdbb2", // bright white
 
-
-	
     [255] = 0,
 
     /* extra colors for defaults */
-    "#90c59c", // 256 cursor color (col_weird_green)
+    "#fabd2f", // 256 cursor color (yellow accent)
     "#eeeeee", // 257 reverse cursor
-    "#bfc1c9", // 258 foreground (col_my_white)
-    "#14161b", // 259 background (col_my_gray)
+    "#ebdbb2", // 258 foreground
+    "#282828", // 259 background
 };
+
 
 unsigned int defaultfg = 258;
 unsigned int defaultbg = 259;

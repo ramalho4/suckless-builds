@@ -15,7 +15,8 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
+#include <stdio.h>
+#include <sys/statvfs.h>
 #include <X11/Xlib.h>
 
 char *tzargentina = "America/Buenos_Aires";
@@ -85,9 +86,9 @@ char *volume_status(void) {
     pclose(fp);
 
     if (strncmp(mute, "yes", 3) == 0)
-        return smprintf("M:%02d%%", vol);
+        return smprintf("󰝟%02d%%", vol);
     else
-        return smprintf("%02d%%", vol);
+        return smprintf("󰕾%02d%%", vol);
 }
 
 
@@ -275,7 +276,6 @@ execscript(char *cmd)
 char *wifi_status(void) {
 	static char buf[128];
 	FILE *fp;
-	
 	fp = popen("nmcli -t -f ACTIVE,SSID dev wifi | grep '^yes:' | cut -d: -f2", "r");
 	if (!fp) return strdup("no wifi");
 	
@@ -289,68 +289,83 @@ char *wifi_status(void) {
 	buf[strcspn(buf, "\n")] = 0;
 	return strdup(buf);	
 }
+
+char *net_status(void) {
+    char cmd[] = "ip -4 addr show enp35s0 | grep -oP '(?<=inet\\s)\\d+(\\.\\d+){3}' | head -n1";
+    FILE *fp = popen(cmd, "r");
+    char buf[64];
+
+    if (!fp)
+        return smprintf("no net");
+
+    if (!fgets(buf, sizeof(buf), fp)) {
+        pclose(fp);
+        return smprintf("down");
+    }
+    pclose(fp);
+
+    buf[strcspn(buf, "\n")] = '\0';
+
+    return smprintf("%s", buf);  // IP address
+}
+
+
+char *disk_usage(const char *path) {
+    struct statvfs fs;
+
+    if (statvfs(path, &fs) != 0)
+        return smprintf("Disk?");
+
+    unsigned long total  = fs.f_blocks * fs.f_frsize;
+    unsigned long avail  = fs.f_bavail * fs.f_frsize;
+    unsigned long used   = total - avail;
+
+    // Convert to GB
+    double used_gb = used / (1024.0 * 1024.0 * 1024.0);
+    double total_gb = total / (1024.0 * 1024.0 * 1024.0);
+
+    return smprintf("󰋊%.1f/%.1fG", used_gb, total_gb);
+}
+
+
 #include <unistd.h>
 int main(void)
 {
     char *status;
-    char *bat = NULL;
-    char *wifi = NULL;
+    char *net = NULL;
     char *vol;
     char *tmar;
+    char *storage;
     int counter = 0;
-	char *bright;
     if (!(dpy = XOpenDisplay(NULL))) {
         fprintf(stderr, "dwmstatus: cannot open display.\n");
         return 1;
     }
 
-    // Initial values for slow-changing items
-    bat = getbattery("/sys/class/power_supply/BAT0");
-    wifi = wifi_status();
 
     for (;;) {
         // Update date/time every loop
-        tmar = mktimes("%a %-m/%-d %-I:%M %p", tzdenver);
-        for (char *p = tmar; *p; p++) *p = toupper(*p);
- 
-    	int vol_int = atoi(volume_status());  // convert string to int
-    	int bat_int = atoi(bat);   
-        // Fast-changing item: volume (and brightness if desired)
-        vol = volume_status();
-        bright = brightness_status(); 
-
-        // Update battery every 300 loops (~30s)
-        if (counter % 300 == 0) {
-            free(bat);
-            bat = getbattery("/sys/class/power_supply/BAT0");
-	    bat_int = atoi(bat);
-        }
-
-        // Update Wi-Fi every 300 loops (~30s)
-        if (counter % 5 == 0) {
-            free(wifi);
-            wifi = wifi_status();
-        }
+        tmar = mktimes("%A, %B %-d %-I:%M%p", tzdenver);
+	storage = disk_usage("/");
+    	vol = volume_status();
+        net = net_status();
+        
 
         // Construct and set status bar
-        status = smprintf(" [[%s] [bat:%s] [vol:%s] [lcd:%s] [%s]", wifi, bat, vol, bright, tmar);
+        status = smprintf("   [󰈀%s] [%s] [%s] %s  ",net ,vol, storage, tmar);
         setstatus(status);
        
 
-
-        // Free temporary strings
-        free(vol);
-        //free(bright); // uncomment if you add brightness
-        free(tmar);
-        free(status);
-
         counter++;
-        usleep(100000); // 0.1s delay → near-instant updates
+        usleep(10000); // 0.1s delay → near-instant updates
     }
 
     // Free remaining memory
-    free(bat);
-    free(wifi);
+    free(vol);
+    free(storage);
+    free(tmar);
+    free(status);
+    free(net);
     XCloseDisplay(dpy);
 
     return 0;

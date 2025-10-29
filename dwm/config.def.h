@@ -17,24 +17,28 @@ static const int sidepad = 10;
 
 static const char *fonts[]          = { "Inconsolata:style=SemiBold:size=16" };
 static const char dmenufont[]       = "Inconsolata:style=SemiBold:size=18";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char col_black[] 		="#000000";
-static const char col_white[]		="#ffffff";
-static const char col_weird_green[] 	="#90c59c";
-static const char col_my_gray[]		="#14161b";
-static const char col_my_white[] 	="#bfc1c9"; 
+/* Gruvbox colors */
+static const char col_black[]       = "#282828"; // background dark
+static const char col_dark_gray[]   = "#3c3836"; // normal gray/dark
+static const char col_light_gray[]  = "#bdae93"; // normal text gray
+static const char col_white[]       = "#ebdbb2"; // bright text / foreground
+static const char col_red[]         = "#cc241d";
+static const char col_green[]       = "#98971a";
+static const char col_yellow[]      = "#d79921"; 
+static const char col_blue[]        = "#458588";
+static const char col_magenta[]     = "#b16286";
+static const char col_cyan[]        = "#689d6a";
+
+/* Choose primary colors for your theme */
+static const char col_bg[]          = "#282828"; // background
+static const char col_fg[]          = "#ebdbb2"; // foreground
+static const char col_accent[]      = "#fbd783"; // selected highlight (yellow)
+
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_my_white, col_my_gray, col_my_gray },
-	[SchemeSel]  = { col_my_gray, col_weird_green,  col_weird_green  }
-
-	
+        /*               fg         bg         border   */
+        [SchemeNorm] = { col_fg, col_bg, col_dark_gray },
+        [SchemeSel]  = { col_bg, col_accent, col_accent }
 };
-
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -82,17 +86,17 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-
 static const char *dmenucmd[] = {
-	"dmenu_run",
-	"-l", "10",
-	"-fn", dmenufont,          // use the same font as your bar
-	"-nb", col_my_gray,        // normal background
-	"-nf", col_my_white,    // normal foreground
-	"-sb", col_weird_green,    // selected background
-	"-sf", col_my_gray,        // selected foreground
-	NULL
+    "dmenu_run",
+    "-l", "10",
+    "-fn", dmenufont,      // font
+    "-nb", col_bg,          // normal background
+    "-nf", col_fg,          // normal foreground
+    "-sb", col_accent,      // selected background
+    "-sf", col_bg,          // selected foreground
+    NULL
 };
+
 
 static const char *termcmd[]  = { "st", NULL };
 
