@@ -85,9 +85,9 @@ char *volume_status(void) {
     pclose(fp);
 
     if (strncmp(mute, "yes", 3) == 0)
-        return smprintf("M:%02d%%", vol);
+        return smprintf("󰝟 %02d%%", vol);
     else
-        return smprintf("%02d%%", vol);
+        return smprintf("󰕾 %02d%%", vol);
 }
 
 
@@ -155,12 +155,13 @@ readfile(char *base, char *file)
 
 char *getbattery(char *base)
 {
-    char *co, status;
+    char *co, *status;
     int descap, remcap;
     int perc;
 
     descap = -1;
     remcap = -1;
+ 
 
     co = readfile(base, "present");
     if (co == NULL)
@@ -190,21 +191,26 @@ char *getbattery(char *base)
     free(co);
 
     co = readfile(base, "status");
-    if (!strncmp(co, "Discharging", 11)) {
-        status = '-';
-    } else if (!strncmp(co, "Charging", 8)) {
-        status = '+';
-    } else {
-        status = '?';
-    }
-
-    if (remcap < 0 || descap < 0)
+	
+    if (remcap < -1 || descap < 0)
         return smprintf("invalid");
 
-    perc = (int)(((float)remcap / (float)descap) * 100);
+    perc = (int)(((float)remcap / (float)descap) * 99);
+
+    if (!strncmp(co, "Discharging", 11)) {
+	if ( perc <= 15) 		{status = "󰂎";}
+	else if (perc <= 50 ) 	{status = "󱊡";}
+	else if (perc <= 75 ) 	{status = "󱊢";}
+	else {status = "󱊣";}
+
+    } else if (!strncmp(co, "Charging", 8)) {
+	    status = "󰂄";
+    } else {
+        status = "󰂑";
+    }
 
     // Zero-padded battery percentage with % and status sign
-    return smprintf("%02d%%%c", perc, status);
+    return smprintf("%s %02d%%", status, perc);
 }
 
 
@@ -310,7 +316,7 @@ int main(void)
 
     for (;;) {
         // Update date/time every loop
-        tmar = mktimes("%A, %B %-d %I:%M %p", tzdenver);
+        tmar = mktimes("%A, %B %-d %I:%M%p", tzdenver);
      	int vol_int = atoi(volume_status());  // convert string to int
     	int bat_int = atoi(bat);   
         // Fast-changing item: volume (and brightness if desired)
@@ -325,7 +331,7 @@ int main(void)
         
 
         // Construct and set status bar
-        status = smprintf(" [[%s] [bat:%s] [vol:%s] [lcd:%s] [%s]", wifi, bat, vol, bright, tmar);
+        status = smprintf(" [[󰖩 %s] [%s] [%s] [󰃠 %s]  %s  ", wifi, bat, vol, bright, tmar);
         setstatus(status);
        
 
