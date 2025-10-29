@@ -86,9 +86,9 @@ char *volume_status(void) {
     pclose(fp);
 
     if (strncmp(mute, "yes", 3) == 0)
-        return smprintf("󰝟%02d%%", vol);
+        return smprintf("󰝟 %02d%%", vol);
     else
-        return smprintf("󰕾%02d%%", vol);
+        return smprintf("󰕾 %02d%%", vol);
 }
 
 
@@ -324,7 +324,7 @@ char *disk_usage(const char *path) {
     double used_gb = used / (1024.0 * 1024.0 * 1024.0);
     double total_gb = total / (1024.0 * 1024.0 * 1024.0);
 
-    return smprintf("󰋊%.1f/%.1fG", used_gb, total_gb);
+    return smprintf("󰋊 %.1f/%.1fG", used_gb, total_gb);
 }
 
 
@@ -352,7 +352,7 @@ int main(void)
         
 
         // Construct and set status bar
-        status = smprintf("   [󰈀%s] [%s] [%s] %s  ",net ,vol, storage, tmar);
+        status = smprintf("   [󰈀 %s] [%s] [%s] %s  ",net ,vol, storage, tmar);
         setstatus(status);
        
 
