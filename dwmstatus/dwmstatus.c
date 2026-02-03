@@ -316,7 +316,7 @@ int main(void)
 
     for (;;) {
         // Update date/time every loop
-        tmar = mktimes("%A, %B %-d %I:%M%p", tzdenver);
+        tmar = mktimes("%A, %B %-d %-I:%M%p", tzdenver);
      	int vol_int = atoi(volume_status());  // convert string to int
     	int bat_int = atoi(bat);   
         // Fast-changing item: volume (and brightness if desired)
