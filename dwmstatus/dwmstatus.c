@@ -15,7 +15,7 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
+#include <sys/statvfs.h>
 #include <X11/Xlib.h>
 
 char *tzargentina = "America/Buenos_Aires";
@@ -295,6 +295,45 @@ char *wifi_status(void) {
 	buf[strcspn(buf, "\n")] = 0;
 	return strdup(buf);	
 }
+
+char *net_status(void) {
+    char cmd[] = "ip -4 addr show wlp194s0 | grep -oP '(?<=inet\\s)\\d+(\\.\\d+){3}' | head -n1";
+    FILE *fp = popen(cmd, "r");
+    char buf[64];
+
+    if (!fp)
+        return smprintf("no net");
+
+    if (!fgets(buf, sizeof(buf), fp)) {
+        pclose(fp);
+        return smprintf("down");
+    }
+    pclose(fp);
+
+    buf[strcspn(buf, "\n")] = '\0';
+
+    return smprintf("%s", buf);  // IP address
+}
+
+
+char *disk_usage(const char *path) {
+    struct statvfs fs;
+
+    if (statvfs(path, &fs) != 0)
+        return smprintf("Disk?");
+
+    unsigned long total  = fs.f_blocks * fs.f_frsize;
+    unsigned long avail  = fs.f_bavail * fs.f_frsize;
+    unsigned long used   = total - avail;
+
+    // Convert to GB
+    double used_gb = used / (1024.0 * 1024.0 * 1024.0);
+    double total_gb = total / (1024.0 * 1024.0 * 1024.0);
+
+    return smprintf("󰋊 %.1f/%.1fG", used_gb, total_gb);
+}
+
+
 #include <unistd.h>
 int main(void)
 {
@@ -303,6 +342,9 @@ int main(void)
     char *wifi = NULL;
     char *vol;
     char *tmar;
+    char *storage;
+    char *net = NULL;
+    
     int counter = 0;
 	char *bright;
     if (!(dpy = XOpenDisplay(NULL))) {
@@ -322,7 +364,8 @@ int main(void)
         // Fast-changing item: volume (and brightness if desired)
         vol = volume_status();
         bright = brightness_status(); 
-
+	net = net_status();
+  	storage = disk_usage("/");
         
             bat = getbattery("/sys/class/power_supply/BAT0");
 	    bat_int = atoi(bat);
@@ -331,7 +374,7 @@ int main(void)
         
 
         // Construct and set status bar
-        status = smprintf(" [[󰖩 %s] [%s] [%s] [󰃠 %s]  %s  ", wifi, bat, vol, bright, tmar);
+        status = smprintf(" [[%s] [%s] [󰖩 %s] [%s] [%s] [󰃠 %s]  %s  ",storage, net,  wifi, bat, vol, bright, tmar);
         setstatus(status);
        
 
@@ -343,7 +386,8 @@ int main(void)
         free(bright); // uncomment if you add brightness
         free(tmar);
         free(status);
-
+	free(net);
+	free(storage);
         counter++;
         usleep(10000); // 0.1s delay → near-instant updates
     }
