@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=20:antialias=true:autohint=true";
+static char *font = "Inconsolata:size=20:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -46,6 +46,7 @@ int allowaltscreen = 1;
 /* allow certain non-interactive (insecure) window operations such as:
    setting the clipboard text */
 int allowwindowops = 0;
+
 
 /*
  * draw latency range in ms - from new content/keypress/etc until drawing.
@@ -94,7 +95,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 1;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -124,7 +125,8 @@ static const char *colorname[] = {
     "#fabd2f", // 256 cursor color (yellow accent)
     "#eeeeee", // 257 reverse cursor
     "#ebdbb2", // 258 foreground
-    "#282828", // 259 background
+    //"#282828", // 259 background
+	"#1d2021"
 };
 
 

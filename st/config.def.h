@@ -47,6 +47,7 @@ int allowaltscreen = 1;
    setting the clipboard text */
 int allowwindowops = 0;
 
+
 /*
  * draw latency range in ms - from new content/keypress/etc until drawing.
  * within this range, st draws when content stops arriving (idle). mostly it's
@@ -94,7 +95,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 1;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -124,7 +125,8 @@ static const char *colorname[] = {
     "#fabd2f", // 256 cursor color (yellow accent)
     "#eeeeee", // 257 reverse cursor
     "#ebdbb2", // 258 foreground
-    "#282828", // 259 background
+    //"#282828", // 259 background
+	"#1d2021"
 };
 
 

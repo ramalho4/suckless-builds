@@ -30,9 +30,9 @@ static const char col_magenta[]     = "#b16286";
 static const char col_cyan[]        = "#689d6a";
 
 /* Choose primary colors for your theme */
-static const char col_bg[]          = "#282828"; // background
+static const char col_bg[]          = "#121212"; // background
 static const char col_fg[]          = "#ebdbb2"; // foreground
-static const char col_accent[]      = "#fbd783"; // selected highlight (yellow)
+static const char col_accent[]      = "#d79921"; // selected highlight (yellow)
 
 static const char *colors[][3]      = {
         /*               fg         bg         border   */
@@ -99,11 +99,14 @@ static const char *dmenucmd[] = {
 
 
 static const char *termcmd[]  = { "st", NULL };
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
