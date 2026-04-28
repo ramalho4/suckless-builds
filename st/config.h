@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=20:antialias=true:autohint=true";
+static char *font = "Inconsolata:size=18:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -94,13 +94,13 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 0.9;
 
 /* Terminal colors (16 first used in escape sequence) */
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
     /* 8 normal colors */
-    "#282828", // black
+    "#121212", // black
     "#cc241d", // red
     "#98971a", // green
     "#d79921", // yellow
@@ -125,7 +125,7 @@ static const char *colorname[] = {
     "#fabd2f", // 256 cursor color (yellow accent)
     "#eeeeee", // 257 reverse cursor
     "#ebdbb2", // 258 foreground
-    "#282828", // 259 background
+    "#121212", // 259 background
 };
 
 unsigned int defaultfg = 258;

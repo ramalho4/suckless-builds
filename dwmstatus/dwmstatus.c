@@ -156,12 +156,11 @@ readfile(char *base, char *file)
 char *getbattery(char *base)
 {
     char *co, *status;
-    int descap, remcap;
+    int fullcap, remcap;
     int perc;
 
-    descap = -1;
+    fullcap = -1;
     remcap = -1;
- 
 
     co = readfile(base, "present");
     if (co == NULL)
@@ -172,13 +171,14 @@ char *getbattery(char *base)
     }
     free(co);
 
-    co = readfile(base, "charge_full_design");
+    /* Use actual full capacity instead of design capacity */
+    co = readfile(base, "charge_full");
     if (co == NULL) {
-        co = readfile(base, "energy_full_design");
+        co = readfile(base, "energy_full");
         if (co == NULL)
             return smprintf("");
     }
-    sscanf(co, "%d", &descap);
+    sscanf(co, "%d", &fullcap);
     free(co);
 
     co = readfile(base, "charge_now");
@@ -191,20 +191,28 @@ char *getbattery(char *base)
     free(co);
 
     co = readfile(base, "status");
-	
-    if (remcap < -1 || descap < 0)
+    
+    if (remcap < -1 || fullcap <= 0) {
+        if (co != NULL) free(co);
         return smprintf("invalid");
+    }
 
-    perc = (int)(((float)remcap / (float)descap) * 99);
+    /* Multiply by 100 instead of 99 */
+    perc = (int)(((float)remcap / (float)fullcap) * 100);
 
-    if (!strncmp(co, "Discharging", 11)) {
-	if ( perc <= 15) 		{status = "󰂎";}
-	else if (perc <= 50 ) 	{status = "󱊡";}
-	else if (perc <= 75 ) 	{status = "󱊢";}
-	else {status = "󱊣";}
+    if (co != NULL) {
+        if (!strncmp(co, "Discharging", 11)) {
+            if ( perc <= 15)         {status = "󰂎";}
+            else if (perc <= 50 )    {status = "󱊡";}
+            else if (perc <= 75 )    {status = "󱊢";}
+            else {status = "󱊣";}
 
-    } else if (!strncmp(co, "Charging", 8)) {
-	    status = "󰂄";
+        } else if (!strncmp(co, "Charging", 8)) {
+            status = "󰂄";
+        } else {
+            status = "󰂑";
+        }
+        free(co); /* Free the status string to prevent memory leaks */
     } else {
         status = "󰂑";
     }
@@ -239,8 +247,8 @@ char *brightness_status(void) {
     pclose(fp);
     max = atoi(buf);
 
-    // Compute percentage
-    int perc = (bright * 100) / max;
+    // Compute percentage with proper rounding
+    int perc = (bright * 100 + max / 2) / max;
 
     return smprintf("%02d%%", perc);
 }
@@ -374,7 +382,7 @@ int main(void)
         
 
         // Construct and set status bar
-        status = smprintf(" [[%s] [%s] [󰖩 %s] [%s] [%s] [󰃠 %s]  %s  ",storage, net,  wifi, bat, vol, bright, tmar);
+        status = smprintf(" [[%s] [󰈀 %s] [󰖩 %s] [%s] [%s] [󰃠 %s]  %s  ",storage, net,  wifi, bat, vol, bright, tmar);
         setstatus(status);
        
 
